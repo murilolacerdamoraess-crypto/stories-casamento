@@ -35,6 +35,40 @@
     margin-bottom: 16px;
     grid-column: 1 / -1;
   }
+  .welcome-banner {
+    grid-column: 1 / -1;
+    background: #fff7e0;
+    border-left: 3px solid #d4a800;
+    border-radius: 4px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: #5a4a00;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+  .welcome-banner.hidden { display: none; }
+
+  @media (max-width: 500px) {
+    body { padding: 16px 12px; }
+    .custom-cost {
+      grid-template-columns: 1fr 32px;
+      grid-template-rows: auto auto;
+      gap: 6px 8px;
+    }
+    .custom-cost input[type="text"] { grid-column: 1 / 2; grid-row: 1; }
+    .custom-cost .remove-btn { grid-column: 2; grid-row: 1 / 3; align-self: center; }
+    .custom-cost input[type="number"] { grid-column: 1 / 2; grid-row: 2; }
+    .custom-cost select { grid-column: 1 / 2; grid-row: 2; width: 100%; }
+    .custom-cost {
+      grid-template-areas: "name remove" "value type";
+      grid-template-columns: 1fr 1fr 32px;
+    }
+    .custom-cost input[type="text"] { grid-area: name; grid-column: 1 / 3; }
+    .custom-cost .remove-btn { grid-area: remove; }
+    .custom-cost input[type="number"] { grid-area: value; grid-column: 1 / 2; }
+    .custom-cost select { grid-area: type; grid-column: 2 / 4; }
+    .preset-row { grid-template-columns: 1fr; }
+  }
   .card {
     background: #fff;
     border: 1px solid #e5e5e5;
@@ -402,6 +436,10 @@
 
   <h1>Calculadora — Stories de Casamento</h1>
   <p class="subtitle">Simule preço por casamento ou lucro mensal. Considera taxa de cartão com antecipação na hora.</p>
+
+  <div class="welcome-banner" id="welcome-banner">
+    <strong>👋 Primeira vez aqui?</strong> Os valores abaixo são <strong>exemplo</strong> — troque pelos seus números reais (custos, casamentos, etc). Tudo que você editar é <strong>salvo automaticamente</strong> no seu navegador. <button onclick="dismissBanner()" style="background:transparent;border:none;color:#666;cursor:pointer;text-decoration:underline;font-size:inherit;">já entendi, esconder</button>
+  </div>
 
   <!-- COLUNA ESQUERDA: ENTRADAS -->
   <div>
@@ -908,6 +946,9 @@
     // Referência de mercado (sempre baseado no preço de 10h)
     renderMarket(preco);
 
+    // Salva automaticamente no navegador
+    saveState();
+
     // Hora real trabalhada (incluindo aftermovie e pré/pós)
     const horasPorCas = +els.horasPorCasamento.value || 1;
     const horasTotaisMes = horasPorCas * n;
@@ -947,6 +988,75 @@
     i.addEventListener('change', update);
   });
 
+  // ===== localStorage persistence =====
+  const STORAGE_KEY = 'stories-casamento-calc-v1';
+  const BANNER_KEY = 'stories-casamento-banner-dismissed';
+
+  function saveState() {
+    const inputs = {};
+    document.querySelectorAll('input, select').forEach(el => {
+      if (!el.id) return;
+      inputs[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+    });
+    const state = { mode, inputs, customCosts, nextCostId, currentCity };
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const state = JSON.parse(raw);
+
+      if (state.mode === 'charge') {
+        mode = 'charge';
+        els.modeCharge.classList.add('active');
+        els.modeEarn.classList.remove('active');
+        els.inputCharge.style.display = '';
+        els.inputEarn.style.display = 'none';
+      }
+
+      if (state.currentCity) {
+        currentCity = state.currentCity;
+        document.querySelectorAll('.city-tabs button').forEach(b => {
+          b.classList.toggle('active', b.dataset.city === currentCity);
+        });
+      }
+
+      if (state.customCosts && Array.isArray(state.customCosts)) {
+        customCosts = state.customCosts;
+        nextCostId = state.nextCostId || (Math.max(0, ...customCosts.map(c => c.id || 0)) + 1);
+        renderCustomCosts();
+      }
+
+      if (state.inputs) {
+        Object.entries(state.inputs).forEach(([id, val]) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          if (el.type === 'checkbox') el.checked = val;
+          else el.value = val;
+        });
+
+        // sincroniza botões de preset de imposto com valor salvo
+        const impostoVal = +state.inputs['imposto-pct'];
+        document.querySelectorAll('#imposto-presets button').forEach(b => {
+          b.classList.toggle('active', +b.dataset.pct === impostoVal);
+        });
+      }
+    } catch (e) { console.warn('Falha ao restaurar dados salvos', e); }
+  }
+
+  function dismissBanner() {
+    document.getElementById('welcome-banner').classList.add('hidden');
+    try { localStorage.setItem(BANNER_KEY, '1'); } catch (e) {}
+  }
+  window.dismissBanner = dismissBanner;
+
+  if (localStorage.getItem(BANNER_KEY) === '1') {
+    document.getElementById('welcome-banner').classList.add('hidden');
+  }
+
+  loadState();
   update();
 </script>
 </body>
