@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stories de Casamento — preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #faf8f5;
+    --paper: #ffffff;
+    --ink: #1a1a1a;
+    --muted: #6b6b6b;
+    --soft: #d4cfc4;
+    --accent: #8b6f47;
+    --accent-dark: #6b5536;
+    --border: #ebe6dd;
+    --wa: #25D366;
+    --wa-dark: #1da851;
+  }
+  body {
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    font-weight: 400;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+  img { max-width: 100%; display: block; }
+
+  .preview-badge {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    background: rgba(26, 26, 26, 0.85);
+    color: #fff;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    border-radius: 4px;
+    z-index: 100;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    backdrop-filter: blur(6px);
+  }
+
+  /* HEADER */
+  header.site-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 32px 24px;
+    text-align: center;
+    z-index: 10;
+  }
+  header .brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #fff;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+  header .brand-sub {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    margin-top: 4px;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    color: #fff;
+    padding: 120px 24px 80px;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(20,18,16,0.45), rgba(20,18,16,0.55)),
+      url('https://images.unsplash.com/photo-1519741497674-611481863552?w=1600&q=80&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+  }
+  .hero h1 {
+    font-size: clamp(38px, 6.5vw, 64px);
+    margin-bottom: 24px;
+    font-style: italic;
+    font-weight: 500;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  .hero .lead {
+    font-size: 17px;
+    margin-bottom: 40px;
+    line-height: 1.7;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    color: rgba(255,255,255,0.95);
+    text-shadow: 0 1px 12px rgba(0,0,0,0.3);
+  }
+  .btn {
+    display: inline-block;
+    background: #fff;
+    color: var(--ink);
+    padding: 16px 38px;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+  .btn:hover { background: var(--accent); color: #fff; transform: translateY(-1px); }
+  .btn-dark { background: var(--ink); color: #fff; }
+  .btn-dark:hover { background: var(--accent); }
+  .btn-outline {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+  }
+  .btn-outline:hover { background: var(--ink); color: #fff; }
+
+  /* SECTION */
+  section.content {
+    padding: 100px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-label {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  .section-title {
+    text-align: center;
+    font-size: clamp(32px, 5vw, 44px);
+    margin-bottom: 60px;
+    font-style: italic;
+  }
+
+  /* BENEFITS */
+  .benefits {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 32px;
+  }
+  .benefit {
+    text-align: center;
+    padding: 16px;
+  }
+  .benefit-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 20px;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .benefit-icon svg { width: 100%; height: 100%; }
+  .benefit h3 {
+    font-size: 24px;
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+  .benefit p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  /* GALLERY */
+  .gallery {
+    background: #f3eee3;
+    padding: 100px 0 0;
+  }
+  .gallery-intro {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 60px;
+    padding: 0 24px;
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  .gallery-item {
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    background: #ddd;
+    position: relative;
+  }
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+  .gallery-item:hover img { transform: scale(1.04); }
+  @media (max-width: 900px) {
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* COMPARISON */
+  .comparison {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .comparison-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    padding: 22px 24px;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .comparison-row:last-child { border-bottom: none; }
+  .comparison-row.head {
+    background: #f5f1ea;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+  }
+  .comparison-row.head > div:first-child { color: var(--muted); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-family: 'Inter', sans-serif; font-style: normal; }
+  .comparison-row > div:first-child {
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .comparison-highlight { background: #faf6ed !important; }
+  .comparison-highlight > div:not(:first-child) {
+    color: var(--accent-dark);
+    font-weight: 600;
+  }
+  @media (max-width: 700px) {
+    .comparison-row { grid-template-columns: 1fr; gap: 4px; padding: 16px 20px; }
+    .comparison-row > div:first-child { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+  }
+
+  /* PACKAGES */
+  .packages {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .package {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .package:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(139, 111, 71, 0.08); }
+  .package.selected {
+    border-color: var(--accent);
+    box-shadow: 0 8px 28px rgba(139, 111, 71, 0.18);
+  }
+  .package.selected::before {
+    content: '✓';
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--accent);
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    z-index: 2;
+  }
+  .package-img {
+    height: 160px;
+    background-size: cover;
+    background-position: center;
+  }
+  .package-body { padding: 28px 28px 32px; flex: 1; display: flex; flex-direction: column; }
+  .package-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    margin-bottom: 6px;
+    font-style: italic;
+  }
+  .package-duration {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .package-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+  .package-price small {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 400;
+    font-family: 'Inter', sans-serif;
+    margin-left: 4px;
+  }
+  .package-installments {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .package ul {
+    list-style: none;
+    margin-top: auto;
+  }
+  .package li {
+    font-size: 13px;
+    color: #444;
+    padding: 10px 0;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.5;
+  }
+  .package li svg {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    color: var(--accent);
+    margin-top: 4px;
+  }
+
+  /* RESERVE FORM */
+  .reserve-section {
+    background: var(--paper);
+    border-top: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .reserve-section::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #fdfaf3 0%, transparent 70%);
+    z-index: 0;
+  }
+  .reserve-form {
+    max-width: 580px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .form-field { display: flex; flex-direction: column; }
+  .form-field.full { grid-column: 1 / -1; }
+  .form-field label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .form-field input, .form-field select {
+    padding: 13px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    background: #fff;
+    color: var(--ink);
+  }
+  .form-field input:focus, .form-field select:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .summary-card {
+    background: #fdfaf3;
+    border: 1px solid var(--soft);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 14px;
+  }
+  .summary-row.total {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    border-top: 1px solid var(--soft);
+    margin-top: 10px;
+    padding-top: 14px;
+    color: var(--ink);
+  }
+  .summary-row .label { color: var(--muted); }
+  .summary-row.no-pkg { font-style: italic; color: var(--muted); justify-content: center; }
+
+  /* PAYMENT MODAL */
+  .payment-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 18, 16, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 24px;
+    backdrop-filter: blur(6px);
+  }
+  .payment-modal.open { display: flex; }
+  .payment-content {
+    background: #fff;
+    border-radius: 12px;
+    max-width: 480px;
+    width: 100%;
+    padding: 40px 32px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+  }
+  .payment-content h2 {
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 6px;
+    font-style: italic;
+  }
+  .payment-content .sub {
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+  .payment-tabs {
+    display: flex;
+    background: #f0ece4;
+    border-radius: 8px;
+    padding: 4px;
+    margin-bottom: 24px;
+  }
+  .payment-tabs button {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 6px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .payment-tabs button.active {
+    background: #fff;
+    color: var(--ink);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .pix-area, .card-area { display: none; }
+  .pix-area.active, .card-area.active { display: block; }
+
+  .pix-qr {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 16px;
+    background:
+      repeating-conic-gradient(#1a1a1a 0% 25%, #fff 0% 50%) 50% / 16px 16px,
+      #1a1a1a;
+    border: 8px solid #fff;
+    box-shadow: 0 0 0 1px var(--border);
+    border-radius: 8px;
+  }
+  .pix-code {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    background: #f5f1ea;
+    padding: 10px 12px;
+    border-radius: 4px;
+    word-break: break-all;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .success-state {
+    text-align: center;
+    padding: 24px 0;
+  }
+  .success-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 20px;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    color: var(--muted);
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  /* WHATSAPP FLOATING BUTTON */
+  .wa-float {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--wa);
+    color: #fff;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 24px rgba(37, 211, 102, 0.4);
+    cursor: pointer;
+    z-index: 90;
+    text-decoration: none;
+    transition: all 0.25s;
+    animation: wa-pulse 2.5s infinite;
+  }
+  .wa-float:hover {
+    background: var(--wa-dark);
+    transform: scale(1.08);
+  }
+  .wa-float svg {
+    width: 30px;
+    height: 30px;
+  }
+  @keyframes wa-pulse {
+    0% { box-shadow: 0 6px 24px rgba(37,211,102,0.4), 0 0 0 0 rgba(37,211,102,0.6); }
+    70% { box-shadow: 0 6px 24px rgba(37,211,102,0.4), 0 0 0 18px rgba(37,211,102,0); }
+    100% { box-shadow: 0 6px 24px rgba(37,211,102,0.4), 0 0 0 0 rgba(37,211,102,0); }
+  }
+  .wa-tooltip {
+    position: fixed;
+    bottom: 36px;
+    right: 96px;
+    background: #1a1a1a;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    z-index: 89;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(8px);
+    transition: all 0.3s;
+  }
+  .wa-float:hover + .wa-tooltip {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  @media (max-width: 600px) {
+    .wa-tooltip { display: none; }
+  }
+
+  /* MOBILE OPTIMIZATIONS */
+  @media (max-width: 700px) {
+    section.content { padding: 64px 20px; }
+    .section-title { margin-bottom: 40px; font-size: 30px; }
+
+    .hero { min-height: 85vh; padding: 110px 20px 60px; }
+    .hero h1 { font-size: 36px; line-height: 1.2; }
+    .hero .lead { font-size: 15px; line-height: 1.65; margin-bottom: 32px; }
+    .btn { padding: 14px 30px; font-size: 13px; }
+
+    header.site-header { padding: 24px 20px; }
+    header .brand { font-size: 22px; }
+    header .brand-sub { font-size: 10px; letter-spacing: 2.5px; }
+
+    .benefits { gap: 28px; }
+    .benefit { padding: 8px; }
+    .benefit-icon { width: 48px; height: 48px; margin-bottom: 14px; }
+    .benefit h3 { font-size: 22px; }
+    .benefit p { font-size: 14px; }
+
+    .gallery { padding: 64px 0 0; }
+    .gallery-intro { margin-bottom: 40px; padding: 0 20px; }
+    .gallery-grid { gap: 2px; }
+    .gallery-item { aspect-ratio: 1/1; }
+
+    .packages { gap: 20px; }
+    .package-img { height: 140px; }
+    .package-body { padding: 24px 22px 28px; }
+    .package-name { font-size: 26px; }
+    .package-price { font-size: 38px; }
+    .package li { font-size: 13px; padding: 9px 0; }
+
+    .reserve-section .content { padding: 64px 20px; }
+    .form-grid { grid-template-columns: 1fr; gap: 14px; margin-bottom: 24px; }
+    .summary-card { padding: 18px 20px; }
+    .summary-row.total { font-size: 20px; }
+
+    .payment-modal { padding: 16px; align-items: flex-end; }
+    .payment-content {
+      padding: 32px 22px 28px;
+      max-height: 95vh;
+      border-radius: 16px 16px 0 0;
+      animation: slideUp 0.3s ease;
+    }
+    .payment-content h2 { font-size: 26px; }
+    .payment-content .sub { font-size: 13px; margin-bottom: 22px; }
+    .pix-qr { width: 160px; height: 160px; }
+    .pix-code { font-size: 10px; }
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .wa-float {
+      width: 56px;
+      height: 56px;
+      bottom: 18px;
+      right: 18px;
+    }
+    .wa-float svg { width: 28px; height: 28px; }
+
+    .preview-badge {
+      top: 8px;
+      left: 8px;
+      font-size: 9px;
+      padding: 5px 8px;
+    }
+
+    footer { padding: 48px 20px 32px; }
+    footer .brand-small { font-size: 20px; }
+  }
+
+  @media (max-width: 400px) {
+    .hero h1 { font-size: 30px; }
+    .section-title { font-size: 26px; }
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 60px 24px 40px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 13px;
+    background: var(--paper);
+  }
+  footer .brand-small {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="preview-badge">Preview</div>
+
+<!-- HERO with background image -->
+<header class="site-header">
+  <div class="brand">[seu nome aqui]</div>
+  <div class="brand-sub">stories de casamento</div>
+</header>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <h1>Aproveite o dia mais importante<br>da sua vida.</h1>
+    <p class="lead">
+      Você não pensa em celular, não pede story pra ninguém, não perde nenhum momento. Eu cuido dos stories em tempo real e do aftermovie no dia seguinte — você só vive.
+    </p>
+    <a href="#pacotes" class="btn">Ver pacotes e reservar</a>
+  </div>
+</section>
+
+<!-- BENEFITS with SVG icons -->
+<section class="content">
+  <div class="section-label">Por que faz diferença</div>
+  <h2 class="section-title">Você vive, eu registro</h2>
+  <div class="benefits">
+    <div class="benefit">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+        </svg>
+      </div>
+      <h3>Você se desconecta</h3>
+      <p>Não precisa pensar em registrar nada, postar nada, pedir pra ninguém fazer story. Eu cuido. Sua única função é viver o seu dia.</p>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+          <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+          <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+          <circle cx="12" cy="20" r="1" fill="currentColor"/>
+        </svg>
+      </div>
+      <h3>Família assiste agora</h3>
+      <p>Quem não pôde ir — avó, amiga que mora longe — acompanha tudo enquanto acontece, como se estivesse no salão.</p>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </div>
+      <h3>Eternizado no seu perfil</h3>
+      <p>Quando você acordar dia 1 do mês seguinte, seu perfil já tem um destaque do casamento, editado, com ângulos bons. Um pequeno álbum vivo, pra sempre.</p>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="2.18"/>
+          <line x1="7" y1="2" x2="7" y2="22"/>
+          <line x1="17" y1="2" x2="17" y2="22"/>
+          <line x1="2" y1="12" x2="22" y2="12"/>
+          <line x1="2" y1="7" x2="7" y2="7"/>
+          <line x1="2" y1="17" x2="7" y2="17"/>
+          <line x1="17" y1="17" x2="22" y2="17"/>
+          <line x1="17" y1="7" x2="22" y2="7"/>
+        </svg>
+      </div>
+      <h3>Aftermovie no dia seguinte</h3>
+      <p>Enquanto todo mundo ainda tá comentando "que casamento lindo", você já tem o resumo pra postar. Não em 30 dias — quando todo mundo já esqueceu.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<div class="gallery">
+  <div class="gallery-intro">
+    <div class="section-label">Momentos</div>
+    <h2 class="section-title" style="margin-bottom: 16px;">A entrada, os votos, as alianças</h2>
+    <p style="color: var(--muted); font-size: 15px; line-height: 1.7;">
+      Capto com olho de quem também sonha em casar — os momentos que vocês vão querer reviver pelo resto da vida.
+    </p>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=600&q=80&auto=format&fit=crop" alt="Aliança">
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&q=80&auto=format&fit=crop" alt="Cerimônia">
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1525258946800-98cfd641d0de?w=600&q=80&auto=format&fit=crop" alt="Casamento ao ar livre">
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80&auto=format&fit=crop" alt="Casal">
+    </div>
+  </div>
+</div>
+
+<!-- COMPARISON -->
+<section class="content">
+  <div class="section-label">Posicionamento</div>
+  <h2 class="section-title">Não substitui — completa</h2>
+  <div class="comparison">
+    <div class="comparison-row head">
+      <div></div>
+      <div>Fotógrafo</div>
+      <div>Filmaker</div>
+      <div>Stories</div>
+    </div>
+    <div class="comparison-row">
+      <div>Entrega</div>
+      <div>Fotos editadas</div>
+      <div>Vídeo cinematográfico</div>
+      <div>Stories ao vivo + aftermovie</div>
+    </div>
+    <div class="comparison-row">
+      <div>Quando recebe</div>
+      <div>30-60 dias</div>
+      <div>60-90 dias</div>
+      <div>Durante a festa + dia seguinte</div>
+    </div>
+    <div class="comparison-row comparison-highlight">
+      <div>Pra quê serve</div>
+      <div>Eternizar pra parede</div>
+      <div>Filme do casamento</div>
+      <div>Compartilhar agora + perfil pra sempre</div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section class="content" id="pacotes">
+  <div class="section-label">Pacotes</div>
+  <h2 class="section-title">Escolha o que faz sentido pro seu dia</h2>
+  <div class="packages">
+
+    <div class="package" data-pkg="cerimonia" data-price="430" data-hours="4">
+      <div class="package-img" style="background-image: url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&q=80&auto=format&fit=crop')"></div>
+      <div class="package-body">
+        <div class="package-name">Cerimônia</div>
+        <div class="package-duration">4 horas</div>
+        <div class="package-price">R$ 430<small>à vista</small></div>
+        <div class="package-installments">ou 6x de R$ 75 no cartão</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Cobertura completa da cerimônia</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Stories em tempo real</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Aftermovie no dia seguinte</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Destaque organizado no seu perfil</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="package" data-pkg="cerimonia-festa" data-price="530" data-hours="6">
+      <div class="package-img" style="background-image: url('https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?w=600&q=80&auto=format&fit=crop')"></div>
+      <div class="package-body">
+        <div class="package-name">Cerimônia + Festa</div>
+        <div class="package-duration">6 a 8 horas</div>
+        <div class="package-price">R$ 530<small>à vista</small></div>
+        <div class="package-installments">ou 6x de R$ 92 no cartão</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Cerimônia + festa parcial</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Stories em tempo real</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Aftermovie no dia seguinte</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Destaque organizado no seu perfil</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Cobertura adaptativa</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="package" data-pkg="dia-completo" data-price="640" data-hours="10">
+      <div class="package-img" style="background-image: url('https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=600&q=80&auto=format&fit=crop')"></div>
+      <div class="package-body">
+        <div class="package-name">Dia Completo</div>
+        <div class="package-duration">10 horas</div>
+        <div class="package-price">R$ 640<small>à vista</small></div>
+        <div class="package-installments">ou 6x de R$ 111 no cartão</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Do preparativo ao fim da festa</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Stories em tempo real</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Aftermovie no dia seguinte</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Destaque organizado no seu perfil</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Cobertura adaptativa</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Making-of da noiva</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- RESERVE -->
+<section class="reserve-section" id="reservar">
+  <div class="content" style="padding: 100px 24px;">
+    <div class="reserve-form">
+      <div class="section-label" style="text-align: center;">Reserva</div>
+      <h2 class="section-title" style="margin-bottom: 36px;">Garanta sua data</h2>
+
+      <form id="reserva-form" onsubmit="return submitForm(event)">
+        <div class="form-grid">
+          <div class="form-field full">
+            <label>Seu nome</label>
+            <input type="text" id="f-nome" required placeholder="Como você prefere ser chamada">
+          </div>
+          <div class="form-field full">
+            <label>WhatsApp</label>
+            <input type="tel" id="f-whats" required placeholder="(42) 9 9999-9999">
+          </div>
+          <div class="form-field">
+            <label>Data do casamento</label>
+            <input type="date" id="f-data" required>
+          </div>
+          <div class="form-field">
+            <label>Cidade</label>
+            <select id="f-cidade" required>
+              <option value="">selecione</option>
+              <option value="Ponta Grossa">Ponta Grossa</option>
+              <option value="Curitiba">Curitiba (+ deslocamento)</option>
+              <option value="Outra">Outra (orçar separado)</option>
+            </select>
+          </div>
+          <div class="form-field full">
+            <label>Local do casamento</label>
+            <input type="text" id="f-local" required placeholder="Ex: Chácara das Flores, Estrada do Cerrado">
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div id="summary-content">
+            <div class="summary-row no-pkg">Selecione um pacote acima</div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-dark" style="width: 100%;" id="reserve-btn" disabled>
+          Reservar e ir pro pagamento
+        </button>
+        <p style="text-align: center; font-size: 12px; color: var(--muted); margin-top: 16px;">
+          Você só paga depois de confirmar a disponibilidade da data.
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="brand-small">[seu nome aqui]</div>
+  <div>stories de casamento · Ponta Grossa · PR</div>
+  <div style="margin-top: 8px; font-size: 11px; color: var(--soft);">esta é uma página de preview</div>
+</footer>
+
+<!-- WHATSAPP FLOATING BUTTON -->
+<a href="https://wa.me/5542999999999?text=Oi!%20Vi%20sua%20p%C3%A1gina%20e%20quero%20saber%20mais%20sobre%20stories%20de%20casamento" target="_blank" rel="noopener" class="wa-float" aria-label="Falar no WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/>
+  </svg>
+</a>
+<div class="wa-tooltip">Tire suas dúvidas no WhatsApp</div>
+
+<!-- PAYMENT MODAL -->
+<div class="payment-modal" id="payment-modal">
+  <div class="payment-content">
+    <button class="close-btn" onclick="closePayment()">×</button>
+
+    <div id="payment-step">
+      <h2>Reserva confirmada</h2>
+      <p class="sub">Escolha como você quer pagar</p>
+
+      <div class="summary-card" id="payment-summary"></div>
+
+      <div class="payment-tabs">
+        <button class="active" onclick="switchTab('pix', event)">Pix · à vista</button>
+        <button onclick="switchTab('card', event)">Cartão · até 6x</button>
+      </div>
+
+      <div class="pix-area active" id="pix-area">
+        <div class="pix-qr"></div>
+        <p style="text-align: center; font-size: 13px; color: var(--muted); margin-bottom: 12px;">
+          Aponte a câmera do banco no QR code
+        </p>
+        <div class="pix-code">00020126580014BR.GOV.BCB.PIX0136a629534e-7693-4846-b028-f142082d7b77520400005...</div>
+        <button class="btn btn-dark" style="width: 100%;" onclick="fakePay()">Já paguei</button>
+      </div>
+
+      <div class="card-area" id="card-area">
+        <div class="form-grid">
+          <div class="form-field full">
+            <label>Número do cartão</label>
+            <input type="text" placeholder="0000 0000 0000 0000" maxlength="19">
+          </div>
+          <div class="form-field full">
+            <label>Nome no cartão</label>
+            <input type="text" placeholder="Como está no cartão">
+          </div>
+          <div class="form-field">
+            <label>Validade</label>
+            <input type="text" placeholder="MM/AA" maxlength="5">
+          </div>
+          <div class="form-field">
+            <label>CVV</label>
+            <input type="text" placeholder="000" maxlength="4">
+          </div>
+          <div class="form-field full">
+            <label>Parcelas</label>
+            <select>
+              <option>1x à vista</option>
+              <option>2x sem juros</option>
+              <option>3x sem juros</option>
+              <option>4x</option>
+              <option>5x</option>
+              <option>6x</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-dark" style="width: 100%;" onclick="fakePay()">Pagar</button>
+      </div>
+    </div>
+
+    <div id="success-step" style="display: none;">
+      <div class="success-state">
+        <div class="success-icon">✓</div>
+        <h2>Tudo certo!</h2>
+        <p class="sub">Você recebeu a confirmação no seu WhatsApp.<br>Vou te chamar nos próximos dias pra alinhar o briefing do seu casamento.</p>
+        <button class="btn btn-outline" onclick="resetAll()">Voltar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const fmt = (v) => 'R$ ' + Math.round(v).toLocaleString('pt-BR');
+  let selectedPkg = null;
+
+  document.querySelectorAll('.package').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.package').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selectedPkg = {
+        id: card.dataset.pkg,
+        name: card.querySelector('.package-name').textContent,
+        duration: card.querySelector('.package-duration').textContent,
+        price: +card.dataset.price
+      };
+      updateSummary();
+      document.getElementById('reserve-btn').disabled = false;
+    });
+  });
+
+  function updateSummary() {
+    const el = document.getElementById('summary-content');
+    if (!selectedPkg) {
+      el.innerHTML = '<div class="summary-row no-pkg">Selecione um pacote acima</div>';
+      return;
+    }
+    el.innerHTML = `
+      <div class="summary-row"><span class="label">Pacote</span><span>${selectedPkg.name}</span></div>
+      <div class="summary-row"><span class="label">Duração</span><span>${selectedPkg.duration}</span></div>
+      <div class="summary-row total"><span>Total</span><span>${fmt(selectedPkg.price)}</span></div>
+    `;
+  }
+
+  function submitForm(e) {
+    e.preventDefault();
+    if (!selectedPkg) return false;
+
+    const data = {
+      nome: document.getElementById('f-nome').value,
+      whats: document.getElementById('f-whats').value,
+      data: document.getElementById('f-data').value,
+      cidade: document.getElementById('f-cidade').value,
+      local: document.getElementById('f-local').value
+    };
+
+    const dataFmt = new Date(data.data + 'T12:00:00').toLocaleDateString('pt-BR', {
+      day: 'numeric', month: 'long', year: 'numeric'
+    });
+
+    document.getElementById('payment-summary').innerHTML = `
+      <div class="summary-row"><span class="label">Para</span><span>${data.nome}</span></div>
+      <div class="summary-row"><span class="label">Data</span><span>${dataFmt}</span></div>
+      <div class="summary-row"><span class="label">Local</span><span>${data.local}, ${data.cidade}</span></div>
+      <div class="summary-row"><span class="label">Pacote</span><span>${selectedPkg.name}</span></div>
+      <div class="summary-row total"><span>Total</span><span>${fmt(selectedPkg.price)}</span></div>
+    `;
+
+    document.getElementById('payment-modal').classList.add('open');
+    document.getElementById('payment-step').style.display = '';
+    document.getElementById('success-step').style.display = 'none';
+    return false;
+  }
+
+  function switchTab(tab, e) {
+    document.querySelectorAll('.payment-tabs button').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    document.getElementById('pix-area').classList.toggle('active', tab === 'pix');
+    document.getElementById('card-area').classList.toggle('active', tab === 'card');
+  }
+
+  function fakePay() {
+    document.getElementById('payment-step').style.display = 'none';
+    document.getElementById('success-step').style.display = '';
+  }
+
+  function closePayment() {
+    document.getElementById('payment-modal').classList.remove('open');
+  }
+
+  function resetAll() {
+    closePayment();
+    setTimeout(() => {
+      document.getElementById('reserva-form').reset();
+      document.querySelectorAll('.package').forEach(c => c.classList.remove('selected'));
+      selectedPkg = null;
+      updateSummary();
+      document.getElementById('reserve-btn').disabled = true;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 300);
+  }
+
+  document.getElementById('f-data').min = new Date().toISOString().split('T')[0];
+</script>
+
+</body>
+</html>

@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora — Stories de Casamento</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    background: #fafafa;
+    color: #1a1a1a;
+    line-height: 1.5;
+    padding: 32px 16px;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 800px) {
+    .container { grid-template-columns: 1fr; }
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    grid-column: 1 / -1;
+  }
+  .subtitle {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 16px;
+    grid-column: 1 / -1;
+  }
+  .card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .card h2 {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #666;
+    margin-bottom: 14px;
+  }
+  .mode-toggle {
+    display: flex;
+    background: #f0f0f0;
+    border-radius: 6px;
+    padding: 3px;
+    margin-bottom: 16px;
+  }
+  .mode-toggle button {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 8px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #666;
+    font-weight: 500;
+  }
+  .mode-toggle button.active {
+    background: #fff;
+    color: #1a1a1a;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  }
+  .field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+  }
+  .field:last-child { border-bottom: none; }
+  .field label {
+    color: #333;
+    flex: 1;
+  }
+  .field .hint {
+    color: #999;
+    font-size: 12px;
+    margin-left: 4px;
+  }
+  .field input[type="number"] {
+    width: 100px;
+    padding: 6px 8px;
+    border: 1px solid #d4d4d4;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: right;
+    font-family: inherit;
+    background: #fff;
+  }
+  .field input:focus {
+    outline: none;
+    border-color: #1a1a1a;
+  }
+  .field .prefix {
+    color: #999;
+    margin-right: 4px;
+    font-size: 13px;
+  }
+  .checkbox-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .checkbox-field input { cursor: pointer; }
+
+  .help-text {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  .custom-cost {
+    display: grid;
+    grid-template-columns: 1fr 110px 130px 28px;
+    gap: 6px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .custom-cost input[type="text"] {
+    padding: 6px 8px;
+    border: 1px solid #d4d4d4;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: inherit;
+    background: #fff;
+    min-width: 0;
+  }
+  .custom-cost input[type="number"] {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #d4d4d4;
+    border-radius: 4px;
+    font-size: 13px;
+    text-align: right;
+    font-family: inherit;
+    background: #fff;
+  }
+  .custom-cost select {
+    padding: 6px 6px;
+    border: 1px solid #d4d4d4;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: inherit;
+    background: #fff;
+    cursor: pointer;
+  }
+  .custom-cost input:focus, .custom-cost select:focus {
+    outline: none;
+    border-color: #1a1a1a;
+  }
+  .custom-cost .remove-btn {
+    background: transparent;
+    border: none;
+    color: #999;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+  }
+  .custom-cost .remove-btn:hover { color: #b42318; }
+
+  .add-cost-btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    background: #fff;
+    border: 1px dashed #c0c0c0;
+    border-radius: 6px;
+    color: #555;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+  }
+  .add-cost-btn:hover { background: #f5f5f5; border-color: #888; }
+
+  .advanced-toggle {
+    background: transparent;
+    border: none;
+    color: #666;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 6px 0;
+    font-family: inherit;
+    text-decoration: underline;
+  }
+  .advanced-content {
+    display: none;
+    margin-top: 8px;
+  }
+  .advanced-content.open { display: block; }
+
+  .preset-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .preset-row button {
+    background: #fff;
+    border: 1px solid #d4d4d4;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #333;
+    font-weight: 500;
+  }
+  .preset-row button:hover { background: #f5f5f5; }
+  .preset-row button.active {
+    background: #1a1a1a;
+    color: #fff;
+    border-color: #1a1a1a;
+  }
+  .preset-row button.active .preset-pct { color: #fff; }
+  .preset-pct {
+    font-weight: 700;
+    color: #666;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .city-tabs {
+    display: flex;
+    background: #f0f0f0;
+    border-radius: 6px;
+    padding: 3px;
+    margin-bottom: 14px;
+  }
+  .city-tabs button {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 7px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #666;
+    font-weight: 500;
+    font-family: inherit;
+  }
+  .city-tabs button.active {
+    background: #fff;
+    color: #1a1a1a;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  }
+  .tier {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid #f0f0f0;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    background: #fff;
+    font-size: 13px;
+  }
+  .tier.current {
+    border-color: #1a7a3e;
+    background: #f0faf3;
+  }
+  .tier-name { font-weight: 600; color: #333; }
+  .tier-range { color: #666; font-size: 12px; }
+  .tier-price {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: #1a1a1a;
+  }
+  .tier.current .tier-here {
+    display: inline-block;
+    margin-left: 8px;
+    background: #1a7a3e;
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .tier-here { display: none; }
+
+  .market-note {
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: #fff7e0;
+    border-left: 3px solid #d4a800;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #5a4a00;
+    line-height: 1.5;
+  }
+  .market-disclaimer {
+    margin-top: 10px;
+    font-size: 11px;
+    color: #999;
+    font-style: italic;
+  }
+
+  .dre {
+    grid-column: 1 / -1;
+  }
+  .dre-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+  }
+  .dre-line.subtotal {
+    font-weight: 600;
+    background: #fafafa;
+    padding: 12px 12px;
+    margin: 6px -12px;
+    border-radius: 4px;
+    border-bottom: none;
+  }
+  .dre-line.final {
+    font-weight: 700;
+    font-size: 18px;
+    padding: 16px 12px;
+    margin-top: 8px;
+    background: #1a1a1a;
+    color: #fff;
+    border-radius: 4px;
+    border-bottom: none;
+  }
+  .dre-line .label { color: #444; }
+  .dre-line.subtotal .label,
+  .dre-line.final .label { color: inherit; }
+  .dre-line .value { font-variant-numeric: tabular-nums; }
+  .negative { color: #999; }
+
+  .margin-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 8px;
+  }
+  .margin-good { background: #e7f5ec; color: #1a7a3e; }
+  .margin-ok { background: #fff7e0; color: #8a6500; }
+  .margin-bad { background: #fde8e8; color: #b42318; }
+
+  .highlight-result {
+    background: #f5f5f5;
+    border-radius: 6px;
+    padding: 14px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .highlight-result .label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #666;
+    margin-bottom: 4px;
+  }
+  .highlight-result .value {
+    font-size: 28px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .footnote {
+    grid-column: 1 / -1;
+    font-size: 12px;
+    color: #888;
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+  .footnote strong { color: #444; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Calculadora — Stories de Casamento</h1>
+  <p class="subtitle">Simule preço por casamento ou lucro mensal. Considera taxa de cartão com antecipação na hora.</p>
+
+  <!-- COLUNA ESQUERDA: ENTRADAS -->
+  <div>
+
+    <div class="card" style="margin-bottom: 16px;">
+      <h2>Modo</h2>
+      <div class="mode-toggle">
+        <button id="mode-earn" class="active">Quero ganhar X</button>
+        <button id="mode-charge">Vou cobrar Y</button>
+      </div>
+
+      <div id="input-earn" class="field">
+        <label>Meta de lucro líquido / mês</label>
+        <div><span class="prefix">R$</span><input type="number" id="meta-lucro" value="1500"></div>
+      </div>
+      <div id="input-charge" class="field" style="display:none;">
+        <label>Preço por casamento (10h)</label>
+        <div><span class="prefix">R$</span><input type="number" id="preco-casamento" value="640"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 16px;">
+      <h2>Operação</h2>
+      <div class="field">
+        <label>Casamentos por mês</label>
+        <input type="number" id="qtd-casamentos" value="4">
+      </div>
+      <div class="field">
+        <label>Horas totais por casamento <span class="hint">(evento + edição + entrega)</span></label>
+        <input type="number" id="horas-por-casamento" value="13" step="0.5">
+      </div>
+      <div class="help-text" style="margin-top: 6px;">Exemplo: 10h no evento + 0,5h aftermovie no dia seguinte + 2,5h de briefing/atendimento/entrega de arquivos = <strong>13h por casamento</strong>. Ajuste pro caso dela.</div>
+      <div class="field">
+        <label>Deslocamento por casamento</label>
+        <div><span class="prefix">R$</span><input type="number" id="deslocamento" value="50"></div>
+      </div>
+      <div class="field">
+        <label>Alimentação por casamento</label>
+        <div><span class="prefix">R$</span><input type="number" id="alimentacao" value="30"></div>
+      </div>
+      <div class="field">
+        <label>Assinaturas mensais <span class="hint">(apps + storage)</span></label>
+        <div><span class="prefix">R$</span><input type="number" id="assinaturas" value="80"></div>
+      </div>
+      <div class="field">
+        <label>Dados móveis extras</label>
+        <div><span class="prefix">R$</span><input type="number" id="dados" value="50"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 16px;">
+      <h2>Reserva para equipamento</h2>
+      <div class="help-text">Todo mês ela separa um valor pra <strong>comprar equipamento</strong> — tanto o que precisa agora (luz, lapela, tripé, apps) quanto pra ir guardando pro celular novo no futuro. Não é "gasto", é poupança do trabalho.</div>
+      <div class="field">
+        <label>Separar por mês pra equipamento</label>
+        <div><span class="prefix">R$</span><input type="number" id="reserva-equipamento" value="450"></div>
+      </div>
+      <div class="help-text" id="reserva-explainer" style="margin-top: 8px; font-style: italic;"></div>
+    </div>
+
+    <div class="card" style="margin-bottom: 16px;">
+      <h2>Reserva para imposto</h2>
+      <div class="help-text">Mesmo se ela <strong>não pagar imposto agora</strong>, é bom separar uma parte. Evita susto no fim do ano. Não sabe quanto? Clica em uma das opções abaixo:</div>
+      <div class="preset-row" id="imposto-presets">
+        <button type="button" data-pct="0">Não vou pagar nada<span class="preset-pct">0%</span></button>
+        <button type="button" data-pct="6">Vou abrir MEI<span class="preset-pct">6%</span></button>
+        <button type="button" data-pct="10" class="active">Reserva segura<span class="preset-pct">10%</span></button>
+        <button type="button" data-pct="15">Reserva conservadora<span class="preset-pct">15%</span></button>
+      </div>
+      <div class="field">
+        <label>Ou digite uma porcentagem</label>
+        <div><input type="number" id="imposto-pct" value="10" step="0.5">&nbsp;%</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 16px;">
+      <h2>Outros custos</h2>
+      <div class="help-text">Adicione qualquer custo que faltou — uma assinatura nova, gasolina extra, presente pros noivos, o que for. Escolha se é gasto <strong>por casamento</strong> (acontece toda vez que ela faz um) ou <strong>por mês</strong> (acontece todo mês, independente do número de casamentos).</div>
+      <div id="custom-costs-list"></div>
+      <button type="button" class="add-cost-btn" id="add-cost-btn">+ adicionar custo</button>
+    </div>
+
+    <div class="card">
+      <h2>Pagamentos</h2>
+      <label class="checkbox-field">
+        <input type="checkbox" id="antecipar" checked>
+        Receber o dinheiro do cartão na hora (taxa maior)
+      </label>
+      <button type="button" class="advanced-toggle" id="advanced-toggle">Configurações avançadas ▾</button>
+      <div class="advanced-content" id="advanced-content">
+        <div class="help-text">Estimativa de como os clientes vão pagar. Se não souber, deixa como tá — os valores padrão já refletem a média de casamentos.</div>
+        <div class="field">
+          <label>% recebido via Pix</label>
+          <div><input type="number" id="mix-pix" value="30">&nbsp;%</div>
+        </div>
+        <div class="field">
+          <label>% débito</label>
+          <div><input type="number" id="mix-debito" value="10">&nbsp;%</div>
+        </div>
+        <div class="field">
+          <label>% crédito à vista</label>
+          <div><input type="number" id="mix-credito" value="10">&nbsp;%</div>
+        </div>
+        <div class="field">
+          <label>% crédito parcelado</label>
+          <div><input type="number" id="mix-parcelado" value="50">&nbsp;%</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COLUNA DIREITA: RESULTADOS -->
+  <div>
+
+    <div class="card" style="margin-bottom: 16px;">
+      <h2 id="result-title">Preço sugerido</h2>
+      <div class="highlight-result">
+        <div class="label" id="highlight-label">Cobrar por casamento de 10h</div>
+        <div class="value" id="highlight-value">R$ 0</div>
+        <div id="hora-real" style="margin-top: 8px; font-size: 12px; color: #666;"></div>
+      </div>
+      <div id="pacotes-sugeridos" style="font-size: 13px; color: #555;"></div>
+    </div>
+
+    <div class="card" style="margin-bottom: 16px;">
+      <h2>Referência de mercado</h2>
+      <div class="help-text">Onde o preço dela cai em comparação com o mercado da região. <strong>Iniciante</strong> é normal pra quem tá começando — fechar mais casamentos vale mais do que cobrar caro agora.</div>
+      <div class="city-tabs">
+        <button class="active" data-city="pg">Ponta Grossa</button>
+        <button data-city="cwb">Curitiba</button>
+      </div>
+      <div id="market-ranges"></div>
+      <div id="market-note" class="market-note" style="display:none;"></div>
+      <div class="market-disclaimer">Estimativa baseada em pesquisa de mercado regional (2025-2026). Preços reais variam por profissional, posicionamento e tipo de evento.</div>
+    </div>
+
+    <div class="card dre">
+      <h2>DRE Mensal</h2>
+      <div class="dre-line">
+        <span class="label">Receita bruta</span>
+        <span class="value" id="dre-receita">R$ 0</span>
+      </div>
+      <div class="dre-line">
+        <span class="label">(−) Taxa cartão <span id="dre-taxa-pct" class="hint"></span></span>
+        <span class="value negative" id="dre-taxa">R$ 0</span>
+      </div>
+      <div class="dre-line">
+        <span class="label">(−) Deslocamento</span>
+        <span class="value negative" id="dre-deslocamento">R$ 0</span>
+      </div>
+      <div class="dre-line">
+        <span class="label">(−) Alimentação</span>
+        <span class="value negative" id="dre-alimentacao">R$ 0</span>
+      </div>
+      <div class="dre-line">
+        <span class="label">(−) Assinaturas</span>
+        <span class="value negative" id="dre-assinaturas">R$ 0</span>
+      </div>
+      <div class="dre-line">
+        <span class="label">(−) Dados móveis</span>
+        <span class="value negative" id="dre-dados">R$ 0</span>
+      </div>
+      <div id="dre-custom-costs"></div>
+      <div class="dre-line subtotal">
+        <span class="label">
+          = Margem bruta
+          <span id="margem-badge" class="margin-indicator">0%</span>
+        </span>
+        <span class="value" id="dre-margem-bruta">R$ 0</span>
+      </div>
+      <div class="dre-line">
+        <span class="label">(−) Reserva pra equipamento</span>
+        <span class="value negative" id="dre-equipamento">R$ 0</span>
+      </div>
+      <div class="dre-line" id="dre-imposto-line" style="display:none;">
+        <span class="label">(−) Reserva pra imposto <span id="dre-imposto-pct" class="hint"></span></span>
+        <span class="value negative" id="dre-imposto">R$ 0</span>
+      </div>
+      <div class="dre-line final">
+        <span class="label">= Lucro líquido</span>
+        <span class="value" id="dre-lucro">R$ 0</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footnote">
+    <p><strong>Margem bruta saudável:</strong> ≥ 70% (verde). Entre 50-70% (amarelo) tá apertado. Abaixo de 50% (vermelho) o negócio não se sustenta.</p>
+    <p><strong>Margem bruta</strong> = Receita − custos diretos do serviço (cartão, deslocamento, alimentação, dados, assinaturas). <strong>Lucro líquido</strong> desconta ainda amortização do investimento e reserva pro celular.</p>
+    <p><strong>Taxas usadas:</strong> Pix 0% / Débito 1,5% / Crédito à vista 3% (4% com antecipação) / Parcelado 5% (8,5% com antecipação). Mix padrão InfinitePay/Nubank Tap to Pay em 2026.</p>
+  </div>
+
+</div>
+
+<script>
+  const fmt = (v) => 'R$ ' + Math.round(v).toLocaleString('pt-BR');
+
+  const els = {
+    modeEarn: document.getElementById('mode-earn'),
+    modeCharge: document.getElementById('mode-charge'),
+    inputEarn: document.getElementById('input-earn'),
+    inputCharge: document.getElementById('input-charge'),
+    metaLucro: document.getElementById('meta-lucro'),
+    precoCasamento: document.getElementById('preco-casamento'),
+    qtdCasamentos: document.getElementById('qtd-casamentos'),
+    horasPorCasamento: document.getElementById('horas-por-casamento'),
+    horaReal: document.getElementById('hora-real'),
+    deslocamento: document.getElementById('deslocamento'),
+    alimentacao: document.getElementById('alimentacao'),
+    assinaturas: document.getElementById('assinaturas'),
+    dados: document.getElementById('dados'),
+    reservaEquipamento: document.getElementById('reserva-equipamento'),
+    reservaExplainer: document.getElementById('reserva-explainer'),
+    impostoPct: document.getElementById('imposto-pct'),
+    mixPix: document.getElementById('mix-pix'),
+    mixDebito: document.getElementById('mix-debito'),
+    mixCredito: document.getElementById('mix-credito'),
+    mixParcelado: document.getElementById('mix-parcelado'),
+    antecipar: document.getElementById('antecipar'),
+
+    highlightLabel: document.getElementById('highlight-label'),
+    highlightValue: document.getElementById('highlight-value'),
+    resultTitle: document.getElementById('result-title'),
+    pacotesSugeridos: document.getElementById('pacotes-sugeridos'),
+
+    dreReceita: document.getElementById('dre-receita'),
+    dreTaxa: document.getElementById('dre-taxa'),
+    dreTaxaPct: document.getElementById('dre-taxa-pct'),
+    dreDeslocamento: document.getElementById('dre-deslocamento'),
+    dreAlimentacao: document.getElementById('dre-alimentacao'),
+    dreAssinaturas: document.getElementById('dre-assinaturas'),
+    dreDados: document.getElementById('dre-dados'),
+    dreMargemBruta: document.getElementById('dre-margem-bruta'),
+    dreEquipamento: document.getElementById('dre-equipamento'),
+    dreImposto: document.getElementById('dre-imposto'),
+    dreImpostoPct: document.getElementById('dre-imposto-pct'),
+    dreImpostoLine: document.getElementById('dre-imposto-line'),
+    dreLucro: document.getElementById('dre-lucro'),
+    margemBadge: document.getElementById('margem-badge'),
+  };
+
+  let mode = 'earn';
+  let customCosts = [];
+  let nextCostId = 1;
+  let currentCity = 'pg';
+
+  const MARKET = {
+    pg: {
+      name: 'Ponta Grossa',
+      tiers: [
+        { name: 'Iniciante', min: 350, max: 550, hint: 'Construindo portfólio, primeiros casamentos' },
+        { name: 'Intermediário', min: 600, max: 900, hint: '1-2 anos de experiência, agenda regular' },
+        { name: 'Premium', min: 1000, max: 1500, hint: 'Marca consolidada, casamentos maiores' }
+      ],
+      note: null
+    },
+    cwb: {
+      name: 'Curitiba',
+      tiers: [
+        { name: 'Iniciante', min: 500, max: 800, hint: 'Construindo portfólio na capital' },
+        { name: 'Intermediário', min: 900, max: 1400, hint: 'Profissional estabelecida' },
+        { name: 'Premium', min: 1500, max: 2500, hint: 'Casamentos premium, alto padrão' }
+      ],
+      note: 'Curitiba paga mais, mas o deslocamento de Ponta Grossa é ~115km (1h30). Ajuste o campo "Deslocamento por casamento" pra R$ 200-300 (ida e volta de carro), ou cobre o deslocamento à parte do cliente.'
+    }
+  };
+
+  const marketRangesEl = document.getElementById('market-ranges');
+  const marketNoteEl = document.getElementById('market-note');
+
+  document.querySelectorAll('.city-tabs button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.city-tabs button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentCity = btn.dataset.city;
+      update();
+    });
+  });
+
+  function renderMarket(currentPrice) {
+    const city = MARKET[currentCity];
+    marketRangesEl.innerHTML = city.tiers.map(t => {
+      const isCurrent = currentPrice >= t.min && currentPrice <= t.max;
+      return `<div class="tier ${isCurrent ? 'current' : ''}">
+        <div>
+          <div class="tier-name">${t.name}${isCurrent ? '<span class="tier-here">você está aqui</span>' : ''}</div>
+          <div class="tier-range">${t.hint}</div>
+        </div>
+        <div class="tier-price">${fmt(t.min)} – ${fmt(t.max)}</div>
+      </div>`;
+    }).join('');
+
+    // Aviso contextual
+    let noteText = '';
+    if (city.note) noteText = city.note;
+    if (currentPrice < city.tiers[0].min) {
+      noteText = `Seu preço (${fmt(currentPrice)}) está <strong>abaixo da faixa de iniciante</strong> em ${city.name}. Você tá deixando dinheiro na mesa — considere subir.` + (city.note ? '<br><br>' + city.note : '');
+    } else if (currentPrice > city.tiers[city.tiers.length - 1].max) {
+      noteText = `Seu preço (${fmt(currentPrice)}) está <strong>acima da faixa premium</strong> em ${city.name}. Pode ser difícil fechar sem portfólio consolidado.` + (city.note ? '<br><br>' + city.note : '');
+    }
+
+    if (noteText) {
+      marketNoteEl.innerHTML = noteText;
+      marketNoteEl.style.display = 'block';
+    } else {
+      marketNoteEl.style.display = 'none';
+    }
+  }
+
+  const customCostsList = document.getElementById('custom-costs-list');
+  const addCostBtn = document.getElementById('add-cost-btn');
+  const dreCustomCosts = document.getElementById('dre-custom-costs');
+  const advancedToggle = document.getElementById('advanced-toggle');
+  const advancedContent = document.getElementById('advanced-content');
+
+  advancedToggle.addEventListener('click', () => {
+    advancedContent.classList.toggle('open');
+    advancedToggle.textContent = advancedContent.classList.contains('open')
+      ? 'Configurações avançadas ▴'
+      : 'Configurações avançadas ▾';
+  });
+
+  function addCustomCost(name = '', value = 0, type = 'mes') {
+    const id = nextCostId++;
+    customCosts.push({ id, name, value, type });
+    renderCustomCosts();
+    update();
+    if (!name) {
+      const input = document.querySelector(`#cost-name-${id}`);
+      if (input) input.focus();
+    }
+  }
+
+  function removeCustomCost(id) {
+    customCosts = customCosts.filter(c => c.id !== id);
+    renderCustomCosts();
+    update();
+  }
+
+  function renderCustomCosts() {
+    customCostsList.innerHTML = customCosts.map(c => `
+      <div class="custom-cost">
+        <input type="text" id="cost-name-${c.id}" placeholder="ex: gasolina extra" value="${c.name.replace(/"/g, '&quot;')}">
+        <input type="number" id="cost-value-${c.id}" placeholder="R$" value="${c.value}">
+        <select id="cost-type-${c.id}">
+          <option value="casamento" ${c.type === 'casamento' ? 'selected' : ''}>por casamento</option>
+          <option value="mes" ${c.type === 'mes' ? 'selected' : ''}>por mês</option>
+        </select>
+        <button type="button" class="remove-btn" onclick="removeCustomCost(${c.id})" title="remover">×</button>
+      </div>
+    `).join('');
+
+    customCosts.forEach(c => {
+      document.getElementById(`cost-name-${c.id}`).addEventListener('input', (e) => {
+        c.name = e.target.value;
+        update();
+      });
+      document.getElementById(`cost-value-${c.id}`).addEventListener('input', (e) => {
+        c.value = +e.target.value || 0;
+        update();
+      });
+      document.getElementById(`cost-type-${c.id}`).addEventListener('change', (e) => {
+        c.type = e.target.value;
+        update();
+      });
+    });
+  }
+
+  addCostBtn.addEventListener('click', () => addCustomCost());
+  window.removeCustomCost = removeCustomCost;
+
+  document.querySelectorAll('#imposto-presets button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#imposto-presets button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      els.impostoPct.value = btn.dataset.pct;
+      update();
+    });
+  });
+
+  document.getElementById('imposto-pct').addEventListener('input', () => {
+    const val = +els.impostoPct.value;
+    document.querySelectorAll('#imposto-presets button').forEach(b => {
+      b.classList.toggle('active', +b.dataset.pct === val);
+    });
+  });
+
+  function calcTaxaPonderada() {
+    const pix = (+els.mixPix.value || 0) / 100;
+    const deb = (+els.mixDebito.value || 0) / 100;
+    const cred = (+els.mixCredito.value || 0) / 100;
+    const parc = (+els.mixParcelado.value || 0) / 100;
+    const antec = els.antecipar.checked;
+
+    const tPix = 0;
+    const tDeb = 0.015;
+    const tCred = antec ? 0.04 : 0.03;
+    const tParc = antec ? 0.085 : 0.05;
+
+    return pix * tPix + deb * tDeb + cred * tCred + parc * tParc;
+  }
+
+  function update() {
+    const n = +els.qtdCasamentos.value || 1;
+    const desl = +els.deslocamento.value || 0;
+    const alim = +els.alimentacao.value || 0;
+    const ass = +els.assinaturas.value || 0;
+    const dad = +els.dados.value || 0;
+    const reservaEquip = +els.reservaEquipamento.value || 0;
+
+    const taxa = calcTaxaPonderada();
+
+    let customVarTotal = 0;
+    let customFixoTotal = 0;
+    customCosts.forEach(c => {
+      if (c.type === 'casamento') customVarTotal += n * c.value;
+      else customFixoTotal += c.value;
+    });
+
+    const custosVarTotal = n * (desl + alim) + customVarTotal;
+    const custosFixos = ass + dad + customFixoTotal;
+    const impostoPct = (+els.impostoPct.value || 0) / 100;
+    const custosNaoDir = reservaEquip;
+
+    let receita, preco;
+
+    if (mode === 'earn') {
+      const lucroAlvo = +els.metaLucro.value || 0;
+      // receita - taxa*receita - impostoPct*receita - custosVar - custosFix - amort - reserva = lucro
+      // receita(1 - taxa - imposto) = lucro + custosVar + custosFix + amort + reserva
+      receita = (lucroAlvo + custosVarTotal + custosFixos + custosNaoDir) / (1 - taxa - impostoPct);
+      preco = receita / n;
+    } else {
+      preco = +els.precoCasamento.value || 0;
+      receita = preco * n;
+    }
+
+    const taxaValor = receita * taxa;
+    const impostoValor = receita * impostoPct;
+    const margemBruta = receita - taxaValor - custosVarTotal - custosFixos;
+    const margemPct = receita > 0 ? (margemBruta / receita) * 100 : 0;
+    const lucro = margemBruta - reservaEquip - impostoValor;
+
+    // Atualiza highlight
+    if (mode === 'earn') {
+      els.resultTitle.textContent = 'Preço sugerido';
+      els.highlightLabel.textContent = 'Cobrar por casamento de 10h';
+      els.highlightValue.textContent = fmt(preco);
+    } else {
+      els.resultTitle.textContent = 'Lucro projetado';
+      els.highlightLabel.textContent = 'Lucro líquido / mês';
+      els.highlightValue.textContent = fmt(lucro);
+    }
+
+    // Pacotes sugeridos (proporcional a 10h)
+    const precoHora = preco / 10;
+    const mobilizacao = preco * 0.33;
+    els.pacotesSugeridos.innerHTML = `
+      <div style="margin-top: 8px; padding-top: 12px; border-top: 1px solid #f0f0f0;">
+        <div style="font-weight: 600; margin-bottom: 6px; color: #333;">Pacotes sugeridos</div>
+        <div style="display: flex; justify-content: space-between; padding: 3px 0;"><span>Cerimônia (4h)</span><strong>${fmt(mobilizacao + precoHora * 4)}</strong></div>
+        <div style="display: flex; justify-content: space-between; padding: 3px 0;"><span>Cerimônia + festa (6-8h)</span><strong>${fmt(mobilizacao + precoHora * 6)} - ${fmt(mobilizacao + precoHora * 8)}</strong></div>
+        <div style="display: flex; justify-content: space-between; padding: 3px 0;"><span>Dia completo (10h)</span><strong>${fmt(preco)}</strong></div>
+        <div style="display: flex; justify-content: space-between; padding: 3px 0;"><span>Hora extra</span><strong>${fmt(precoHora * 1.2)}/h</strong></div>
+      </div>
+    `;
+
+    // DRE
+    els.dreReceita.textContent = fmt(receita);
+    els.dreTaxa.textContent = '− ' + fmt(taxaValor);
+    els.dreTaxaPct.textContent = `(${(taxa * 100).toFixed(1)}%)`;
+    els.dreDeslocamento.textContent = '− ' + fmt(n * desl);
+    els.dreAlimentacao.textContent = '− ' + fmt(n * alim);
+    els.dreAssinaturas.textContent = '− ' + fmt(ass);
+    els.dreDados.textContent = '− ' + fmt(dad);
+
+    dreCustomCosts.innerHTML = customCosts.map(c => {
+      const total = c.type === 'casamento' ? n * c.value : c.value;
+      const label = (c.name || 'custo sem nome') + (c.type === 'casamento' ? ` (${n}×)` : '');
+      return `<div class="dre-line">
+        <span class="label">(−) ${label}</span>
+        <span class="value negative">− ${fmt(total)}</span>
+      </div>`;
+    }).join('');
+
+    els.dreMargemBruta.textContent = fmt(margemBruta);
+    els.dreEquipamento.textContent = '− ' + fmt(reservaEquip);
+    if (impostoPct > 0) {
+      els.dreImpostoLine.style.display = '';
+      els.dreImposto.textContent = '− ' + fmt(impostoValor);
+      els.dreImpostoPct.textContent = `(${(impostoPct * 100).toFixed(1)}%)`;
+    } else {
+      els.dreImpostoLine.style.display = 'none';
+    }
+    els.dreLucro.textContent = fmt(lucro);
+
+    // Badge de margem
+    els.margemBadge.textContent = margemPct.toFixed(0) + '%';
+    els.margemBadge.className = 'margin-indicator ' +
+      (margemPct >= 70 ? 'margin-good' :
+       margemPct >= 50 ? 'margin-ok' : 'margin-bad');
+
+    // Referência de mercado (sempre baseado no preço de 10h)
+    renderMarket(preco);
+
+    // Hora real trabalhada (incluindo aftermovie e pré/pós)
+    const horasPorCas = +els.horasPorCasamento.value || 1;
+    const horasTotaisMes = horasPorCas * n;
+    const horaBruta = receita / horasTotaisMes;
+    const horaLiquida = lucro / horasTotaisMes;
+    els.horaReal.innerHTML = `${horasTotaisMes.toFixed(0)}h trabalhadas no mês • bruto <strong>${fmt(horaBruta)}/h</strong> • líquido pra ela <strong>${fmt(horaLiquida)}/h</strong>`;
+
+    // Explicador da reserva pra equipamento
+    const em6meses = reservaEquip * 6;
+    const em12meses = reservaEquip * 12;
+    if (reservaEquip > 0) {
+      els.reservaExplainer.innerHTML = `Separando ${fmt(reservaEquip)}/mês, em 6 meses ela tem ${fmt(em6meses)} (dá pra comprar o kit inicial). Em 1 ano, ${fmt(em12meses)} — perto do celular novo de R$ 8.000.`;
+    } else {
+      els.reservaExplainer.innerHTML = '';
+    }
+  }
+
+  els.modeEarn.addEventListener('click', () => {
+    mode = 'earn';
+    els.modeEarn.classList.add('active');
+    els.modeCharge.classList.remove('active');
+    els.inputEarn.style.display = '';
+    els.inputCharge.style.display = 'none';
+    update();
+  });
+  els.modeCharge.addEventListener('click', () => {
+    mode = 'charge';
+    els.modeCharge.classList.add('active');
+    els.modeEarn.classList.remove('active');
+    els.inputCharge.style.display = '';
+    els.inputEarn.style.display = 'none';
+    update();
+  });
+
+  document.querySelectorAll('input').forEach(i => {
+    i.addEventListener('input', update);
+    i.addEventListener('change', update);
+  });
+
+  update();
+</script>
+</body>
+</html>
